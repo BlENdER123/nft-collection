@@ -634,9 +634,7 @@ function LoadNftPage() {
 							<div class="acc-info1">
 								<div class="name">NFTour</div>
 								<div class="wallet">
-									<div class="button-2" onClick={setConnect(true)}>
-										Connect
-									</div>
+									{/* <div class="button-2" onClick={setConnect(true)}>Connect</div> */}
 									<div className="acc-status">Connected:</div>
 									<div className="acc-wallet">{localStorage.address}</div>
 								</div>

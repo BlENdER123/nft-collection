@@ -620,7 +620,10 @@ function ConnectWalletPage() {
 	return (
 		<div
 			className={
-				curentPage === 0 || curentPageLogin === 1 || curentPageLogin === 3
+				curentPage === 0 ||
+				curentPageLogin === 1 ||
+				curentPageLogin === 3 ||
+				curentPage === 5
 					? "modal-connect modal-connect-first"
 					: "modal-connect"
 			}
@@ -631,16 +634,15 @@ function ConnectWalletPage() {
 					curentPage === 0 && errorModal[0].hidden === false ? "page" : "hide"
 				}
 			>
-				{/* <button className="close" onClick={resetPages}>
-					<span></span>
-					<span></span>
-				</button> */}
-				<div className="title">Welcome to DefiSpace!</div>
+				<div className="title">Welcome to NFTour!</div>
+				<div class="text">
+					You need to log in or register to use the functionality of the service
+				</div>
 				<div className="content content-first">
-					<button className="connect-btn zeropage-btn" onClick={NextPageLogin}>
+					<button className="button-1-square" onClick={NextPageLogin}>
 						Log In
 					</button>
-					<button className="connect-btn zeropage-btn" onClick={NextPage}>
+					<button className="button-2-square" onClick={NextPage}>
 						Sign Up
 					</button>
 				</div>
@@ -663,6 +665,7 @@ function ConnectWalletPage() {
 						id=""
 						cols={35}
 						rows={4}
+						placeholder="Seed phrase"
 						onChange={(ev) => {
 							setSeedLogin(ev.target.value);
 						}}
@@ -714,7 +717,7 @@ function ConnectWalletPage() {
 				}
 			>
 				<div className="title">Congratulations!</div>
-				<div className="subtitle">
+				<div className="text">
 					You have successfully logged into your account
 				</div>
 			</div>
@@ -727,8 +730,8 @@ function ConnectWalletPage() {
 					<span></span>
 					<span></span>
 				</button> */}
-				<div className="title">Welcome to DefiSpace!</div>
-				<div className="subtitle">
+				<div className="title">Sign Up</div>
+				<div className="text">
 					Just read the user`s agreement and set pin for registration
 				</div>
 				<div className="content">
@@ -750,15 +753,12 @@ function ConnectWalletPage() {
 					curentPage === 2 && errorModal[0].hidden === false ? "page" : "hide"
 				}
 			>
-				<div className="title">Set PIN for quick login</div>
+				<div className="title">Enter your PIN</div>
 				<div className="pin-inputs">
 					<input type="text" value={input1} maxLength={1} />
 					<input type="text" value={input2} maxLength={1} />
 					<input type="text" value={input3} maxLength={1} />
 					<input type="text" value={input4} maxLength={1} />
-					<button onClick={deletevalueInput}>
-						<img src={backspace} alt="backspace" />
-					</button>
 				</div>
 				<div className="pin-board">
 					<div className="board">
@@ -774,7 +774,11 @@ function ConnectWalletPage() {
 						<button onClick={() => setValueInput("8")}>8</button>
 						<button onClick={() => setValueInput("9")}>9</button>
 						<div className="break"></div>
+						<button className="fake"></button>
 						<button onClick={() => setValueInput("0")}>0</button>
+						<button className="backspace" onClick={deletevalueInput}>
+							<img src={backspace} alt="backspace" />
+						</button>
 					</div>
 				</div>
 			</div>
@@ -789,9 +793,6 @@ function ConnectWalletPage() {
 					<input type="text" value={inputV2} maxLength={1} />
 					<input type="text" value={inputV3} maxLength={1} />
 					<input type="text" value={inputV4} maxLength={1} />
-					<button onClick={deletevalueInputV}>
-						<img src={backspace} alt="backspace" />
-					</button>
 				</div>
 				<div className="pin-board">
 					<div className="board">
@@ -807,7 +808,11 @@ function ConnectWalletPage() {
 						<button onClick={() => setValueInputV("8")}>8</button>
 						<button onClick={() => setValueInputV("9")}>9</button>
 						<div className="break"></div>
+						<button className="fake"></button>
 						<button onClick={() => setValueInputV("0")}>0</button>
+						<button className="backspace" onClick={deletevalueInputV}>
+							<img src={backspace} alt="backspace" />
+						</button>
 					</div>
 				</div>
 			</div>
@@ -817,13 +822,12 @@ function ConnectWalletPage() {
 				}
 			>
 				<div className="title">Copy your seed phrase</div>
-				{/* <div className="subtitle">You are registered in Defi Space</div> */}
+				<div class="text">
+					Don`t forget to save the seed-phrase from your{" "}
+					<a href="https://defispace.com/">account recovery settings</a>
+				</div>
 				<div className="content">
-					<div className="text-seed">
-						Don`t forget to save the seed-phrase <br /> from your{" "}
-						<a href="https://defispace.com/">account recovery settings</a>
-						<div className="seed">{seed}</div>
-					</div>
+					<div className="text-seed">{seed}</div>
 				</div>
 			</div>
 			<div
@@ -832,12 +836,12 @@ function ConnectWalletPage() {
 				}
 			>
 				<div className="title">Top up your wallet for activation</div>
-				{/* <div className="subtitle">You are registered in Defi Space</div> */}
+				<div class="text">
+					Please send 2 or more TON to this address:
+					<span>{addr}</span>, and click "Create wallet".
+				</div>
 				<div className="content">
-					<div className="text-address">
-						Please send 2 or more TON to this address:
-						<span>{addr}</span>, and click "Create wallet".
-					</div>
+					<div className="text-address"></div>
 				</div>
 			</div>
 			<div
@@ -846,7 +850,7 @@ function ConnectWalletPage() {
 				}
 			>
 				<div className="title">Congrats!</div>
-				<div className="subtitle">You are registered in Defi Space</div>
+				<div className="text">You are registered in Defi Space</div>
 				{/* <div className="content">
                         <div className="text-seed">
                             Please send 2 or more TON to this address: {}, and click "Create wallet".
@@ -872,42 +876,16 @@ function ConnectWalletPage() {
 						: "hide"
 				}
 			>
-				{/* <div className="dots">
-					<button
-						className={curentPage === 1 ? "active dot" : "dot"}
-						onClick={() => setCurentPage(1)}
-					></button>
-					<button
-						className={curentPage === 2 ? "active dot" : "dot"}
-						onClick={() => setCurentPage(2)}
-					></button>
-					<button
-						className={curentPage === 3 ? "active dot" : "dot"}
-						onClick={() => setCurentPage(3)}
-					></button>
-					<button
-						className={curentPage === 4 ? "active dot" : "dot"}
-						onClick={() => setCurentPage(4)}
-					></button>
-					<button
-						className={curentPage === 5 ? "active dot" : "dot"}
-						onClick={() => setCurentPage(5)}
-					></button>
-					<button
-						className={curentPage === 6 ? "active dot" : "dot"}
-						onClick={() => setCurentPage(6)}
-					></button>
-				</div> */}
 				<div className="break"></div>
 				<div className="next">
 					<button
-						className={curentPage === 6 ? "hide" : "connect-btn"}
+						className={curentPage === 6 ? "hide" : "button-2-square"}
 						onClick={PrevPage}
 					>
 						Back
 					</button>
 					<button
-						className={curentPage !== 5 ? "hide" : "connect-btn"}
+						className={curentPage !== 5 ? "hide" : "button-3-square"}
 						onClick={() => {
 							navigator.clipboard.writeText(addr);
 						}}
@@ -915,14 +893,14 @@ function ConnectWalletPage() {
 						Copy
 					</button>
 					<button
-						className={curentPage !== 5 ? "hide" : "connect-btn"}
+						className={curentPage !== 5 ? "hide" : "button-1-square"}
 						onClick={NextPage}
 					>
 						Deploy
 					</button>
 					<button
 						className={
-							curentPage === 6 || curentPage === 5 ? "hide" : "connect-btn"
+							curentPage === 6 || curentPage === 5 ? "hide" : "button-1-square"
 						}
 						onClick={NextPage}
 					>
@@ -946,45 +924,32 @@ function ConnectWalletPage() {
 						: "hide"
 				}
 			>
-				{/* <div className="dots">
-					<button
-						className={curentPageLogin === 1 ? "active dot" : "dot"}
-						onClick={() => setCurentPageLogin(1)}
-					></button>
-					<button
-						className={curentPageLogin === 2 ? "active dot" : "dot"}
-						onClick={() => setCurentPageLogin(2)}
-					></button>
-					<button
-						className={curentPageLogin === 3 ? "active dot" : "dot"}
-						onClick={() => setCurentPageLogin(2)}
-					></button>
-				</div> */}
 				<div className="break"></div>
 				<div className="next">
 					<button
-						className={curentPageLogin === 3 ? "hide" : "connect-btn"}
+						className={curentPageLogin === 3 ? "hide" : "button-2-square"}
 						onClick={PrevPageLogin}
 					>
 						Back
 					</button>
 					<button
-						className={curentPageLogin !== 1 ? "hide" : "connect-btn"}
+						className={curentPageLogin !== 1 ? "hide" : "button-1-square"}
 						onClick={NextPageLogin}
 					>
 						Connect
 					</button>
 					<button
-						className={curentPageLogin !== 2 ? "hide" : "connect-btn"}
+						className={curentPageLogin !== 2 ? "hide" : "button-1-square"}
 						onClick={NextPageLogin}
 					>
 						Next
 					</button>
-					<a href="#/welcome-nft" className={curentPageLogin < 3 ? "hide" : ""}>
-						<button className={curentPageLogin < 3 ? "hide" : "connect-btn"}>
-							Great!
-						</button>
-					</a>
+					<button
+						onClick={() => window.location.reload()}
+						className={curentPageLogin < 3 ? "hide" : "button-3-square"}
+					>
+						Great!
+					</button>
 				</div>
 			</div>
 		</div>

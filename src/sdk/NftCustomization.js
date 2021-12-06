@@ -1,8 +1,9 @@
-import React, {useState} from "react";
-import {HashRouter as Router} from "react-router-dom";
+import React, {useState, useEffect} from "react";
+import {HashRouter as Router, Redirect} from "react-router-dom";
 
 function NftCustomization() {
 	let arr = JSON.parse(localStorage.getItem("class"));
+	console.log(arr);
 
 	const [classArr, setClassArr] = useState(arr);
 
@@ -10,6 +11,35 @@ function NftCustomization() {
 
 	let cur = localStorage.getItem("curentLayer");
 	const [curentLayer, setCurentLayer] = useState(cur);
+
+	const [curentWidth, setCurentWidth] = useState();
+	const [curentHeight, setCurentHeight] = useState();
+
+	const [curentSrc, setCurentSrc] = useState();
+
+	const [redirect, setRedirect] = useState(false);
+
+	const [errorModal, setErrorModal] = useState({
+		hidden: false,
+		message: "",
+	});
+
+	function copySrc() {
+		const asyncFunction = async function () {
+			return await getResizeMany();
+		};
+		asyncFunction().then((res) => {
+			let tempArr = [];
+			console.log(res);
+			for (let i = 0; i < classArr.length; i++) {
+				let temp = classArr[i];
+				temp.src = res[i];
+				tempArr.push(temp);
+			}
+			console.log(tempArr);
+			setClassArr(tempArr);
+		});
+	}
 
 	console.log(arr);
 
@@ -89,126 +119,353 @@ function NftCustomization() {
 		setClassArr(tempArr);
 	}
 
+	function setWidth(item, event) {}
+
+	async function saveSize() {
+		let tempArr = [];
+
+		if (curentWidth <= 1 || curentHeight <= 1) {
+			setErrorModal({
+				hidden: true,
+				message: "Image size is too small",
+			});
+			return;
+		}
+
+		for (let i = 0; i < classArr.length; i++) {
+			let temp = classArr[i];
+			if (i == curentLayer) {
+				let tempBg = [];
+				for (let j = 0; j < classArr[i].imgs.length; j++) {
+					//let src;
+
+					// var image = new Image();
+					// image.src = getSrc(temp.imgs[j]);
+
+					// // console.log(temp.imgs[j]);
+					// // console.log(getSrc(temp.imgs[j]));
+					// //console.log(image);
+					// var canvas = document.createElement("canvas");
+					// canvas.width = curentWidth;
+					// canvas.height = curentHeight;
+					temp.width = curentWidth;
+					temp.height = curentHeight;
+					const src = await getResize(temp.imgs[j], curentWidth, curentHeight);
+					console.log(1111111111, src);
+					tempBg.push(src);
+					// var ctx = canvas.getContext("2d");
+					// ctx.drawImage(image, 0, 0, curentWidth, curentHeight);
+
+					// var dataURL = canvas.toDataURL("image/png");
+
+					// //console.log(dataURL.replace(/^data:image\/(png|jpg);base64,/, ""));
+
+					// let src = dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
+					// //resolve(src);
+					// tempBg.push(src);
+					// console.log(tempBg);
+					//console.log(src);
+					// let tempbb = tempBg;
+					// tempbb.push(src);
+					// setTempBg(tempbb);
+					//setSrc(URL.createObjectURL(file));
+				}
+				temp.src = tempBg;
+				//console.log(tempBg);
+				//temp.imgs = tempBg;
+				tempArr.push(temp);
+			} else {
+				tempArr.push(temp);
+			}
+		}
+		console.log(tempArr);
+		setClassArr(tempArr);
+	}
+
 	function getSrc(src) {
-		return "data:image/png;base64," + src;
+		return "https://gateway.pinata.cloud/ipfs/" + src;
 	}
 
 	function logData() {
 		console.log("-----------");
+
+		let tempArr = [];
+		for (let i = 0; i < classArr.length; i++) {
+			let temp = classArr[i];
+			temp.src = [];
+			tempArr.push(temp);
+		}
+
+		setRedirect(true);
+
+		setClassArr(tempArr);
+
 		console.log(classArr);
 		localStorage.setItem("class", JSON.stringify(classArr));
 		localStorage.setItem("curentLayer", curentLayer);
 	}
 
+	function closeError() {
+		setErrorModal({
+			hidden: false,
+			message: "",
+		});
+	}
+
+	function testL() {
+		for (let j = 0; j < classArr[0].imgs.length; j++) {
+			let src = classArr[0].imgs[j];
+			console.log(src);
+			let src2 = getSrc(src);
+			console.log(src2);
+		}
+	}
+
+	async function getResizeMany() {
+		let tempArr = [];
+		for (let i = 0; i < classArr.length; i++) {
+			let tempArrImg = [];
+			for (let j = 0; j < classArr[i].imgs.length; j++) {
+				let res = await getResize(
+					classArr[i].imgs[j],
+					classArr[i].width,
+					classArr[i].height,
+				);
+				tempArrImg.push(res);
+			}
+			tempArr.push(tempArrImg);
+		}
+
+		console.log(tempArr);
+		return tempArr;
+	}
+
+	function getResize(img, width, height) {
+		return new Promise((resolve, reject) => {
+			var image = new Image();
+			image.src = getSrc(img);
+			console.log(getSrc(img));
+
+			var canvas = document.createElement("canvas");
+			canvas.width = width;
+			canvas.height = height;
+
+			var ctx = canvas.getContext("2d");
+			// ctx.drawImage(image, 0, 0, width, height);
+
+			// console.log(canvas);
+
+			image.setAttribute("crossorigin", "anonymous");
+
+			image.onload = function () {
+				ctx.drawImage(image, 0, 0, width, height);
+				resolve(canvas.toDataURL("image/png"));
+			};
+
+			//console.log(canvas.toDataURL("image/png"));
+
+			// var dataURL = canvas.toDataURL("image/png");
+			// console.log(dataURL);
+			// return dataURL;
+		});
+	}
+
 	return (
 		<Router>
-			<div class="constructors">
-				<div className="modal-constructor constructor-position show">
-					<div class="nft-img">
-						<div
-							className={contrBg ? "img img-contrast" : "img"}
-							style={{
-								width: localStorage.getItem("width") + "px",
-								height: localStorage.getItem("height") + "px",
-							}}
-						>
-							{classArr.map((item, index) => {
-								return (
-									<img
-										src={getSrc(item.imgs[0])}
-										style={{
-											left: item.x + "px",
-											top: item.y + "px",
-											"z-index": item.z_index,
-										}}
-									/>
-								);
-							})}
-						</div>
-						<button class="contrast" onClick={contrastBg}>
-							Contrast background
-						</button>
-					</div>
-					<div class="nft-position">
-						<div class="menu-position">
-							{/* <div class="menu-element menu-element-active">
-                                background
-                            </div>
-                            <div class="menu-element">
-                                head
-                            </div> */}
+			<div className={errorModal.hidden === true ? "error-bg" : "hide"}></div>
+			<div className={errorModal.hidden === true ? "App-error" : "App App2"}>
+				<div className="header header2">
+					<div className="container-header">
+						<div className="acc-info">
+							<div class="acc-info1">
+								<div class="name">NFTour</div>
+								<div class="wallet">
+									<div className="acc-status">Connected:</div>
+									<div className="acc-wallet">{localStorage.address}</div>
+								</div>
+							</div>
 
+							<div class="pages">
+								<div class="page-element active">Home</div>
+								<div class="page-element">NFT Generator</div>
+								<div class="page-element">NFT Chapter Constructor</div>
+								<div class="page-element">FAQ</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="constructors">
+					<div class="container-header">
+						<div
+							className={errorModal.hidden === true ? "error-modal" : "hide"}
+						>
+							<button className="close" onClick={closeError}>
+								<span></span>
+								<span></span>
+							</button>
+							<div className="message">{errorModal.message}</div>
+						</div>
+
+						<div class="modal-constructor modal-constructor-layers ">
+							<div class="title">Layers</div>
+							<div class="text">Select and edit the layer</div>
 							{classArr.map((item, index) => {
 								return (
 									<div
 										className={
 											item.active
-												? "menu-element menu-element-active"
-												: "menu-element"
+												? "layers-list_layer layers-list_layer-active"
+												: "layers-list_layer"
 										}
 										onClick={() => setActive(item)}
 									>
-										{item.name}
+										<div class="index">{index + 1}. </div>
+										<span>{item.name}</span>
 									</div>
 								);
 							})}
 
-							{/* <button onClick={test}>cl</button> */}
+							<div class="title">How to use?</div>
+							<div class="text text-nonline">
+								Phasellus condimentum suscipit metus vel mattis. Ut vulputate
+								tincidunt odio. Nam odio augue, molestie id rutrum et, cursus id
+								libero. Quisque nulla dolor, condimentum quis posuere et, mattis
+								quis sapien. Donec mollis.
+								<br />
+								<br />
+								Fusce venenatis odio id pharetra vulputate. Phasellus dolor
+								lacus, condimentum at bibendum vel, laoreet id arcu. Phasellus
+								lobortis luctus semper. Fusce faucibus dolor eget nulla
+								venenatis, eget porttitor nibh finibus. Praesent rhoncus erat et
+								aliquet suscipit. Nam sed bibendum arcu, quis tristique tellus.
+							</div>
 						</div>
 
-						{classArr.map((item, index) => {
-							return (
-								<div className={item.active ? "position" : "hide"}>
-									<div class="position-input">
-										<div class="title">Position</div>
-										<div class="inputs">
-											x{" "}
-											<input
-												type="text"
-												onChange={(event) => setX(item, event)}
-											/>
-											y{" "}
-											<input
-												type="text"
-												onChange={(event) => setY(item, event)}
-											/>
+						<div class="modal-constructor modal-constructor-position">
+							<div class="nft-img">
+								<div
+									className={contrBg ? "img img-contrast" : "img"}
+									style={{
+										width: localStorage.getItem("width") + "px",
+										height: localStorage.getItem("height") + "px",
+									}}
+								>
+									{classArr[0].src?.length > 0
+										? classArr.map((item, index) => {
+												return (
+													<img
+														src={item.src[0]}
+														style={{
+															left: item.x + "px",
+															top: item.y + "px",
+															"z-index": item.z_index,
+														}}
+													/>
+												);
+										  })
+										: copySrc()}
+								</div>
+								<div class="break"></div>
+								<div
+									class="button-1-square"
+									style={{width: localStorage.getItem("width") + "px"}}
+									onClick={logData}
+								>
+									Create NFT
+								</div>
+							</div>
+						</div>
+
+						<div class="modal-constructor modal-constructor-settings">
+							{classArr.map((item, index) => {
+								return (
+									<div className={item.active ? "project-settings" : "hide"}>
+										<div class="title">Settings</div>
+										<div class="text">Edit element position & properties</div>
+										<div class="setting">
+											<div class="title-settings">Position</div>
+											<div class="inputs">
+												<input
+													type="text"
+													placeholder="X:50"
+													onChange={(event) => setX(item, event)}
+												/>
+
+												<input
+													type="text"
+													placeholder="Y:50"
+													onChange={(event) => setY(item, event)}
+												/>
+											</div>
 										</div>
-									</div>
-									<div class="position-input">
-										<div class="title">Z-index</div>
-										<div class="inputs">
+										<div class="setting">
+											<div class="title-settings">Size</div>
+											<div class="inputs">
+												<input
+													type="text"
+													placeholder="150"
+													onChange={(event) =>
+														setCurentWidth(event.target.value)
+													}
+												/>
+												<br />
+												<input
+													type="text"
+													placeholder="125"
+													onChange={(event) =>
+														setCurentHeight(event.target.value)
+													}
+												/>
+											</div>
+										</div>
+										<div class="setting">
+											<div class="title-settings">Z-Index</div>
+
 											<input
 												type="text"
+												placeholder="1"
 												onChange={(event) => setZ(item, event)}
 											/>
 										</div>
+										<div class="button-1-square" onClick={saveSize}>
+											Save size
+										</div>
 									</div>
-								</div>
-							);
-						})}
-						{/* <div class="position-input">
-                                <div class="title">Position</div>
-                                <div class="inputs">
-                                    x <input type="text"/>
-                                    y <input type="text"/>
-                                </div>
-                            </div>
-                            <div class="position-input">
-                                <div class="title">Z-index</div>
-                                <div class="inputs">
-                                    <input type="text"/>
-                                    
-                                </div>
-                            </div> */}
+								);
+							})}
+						</div>
 					</div>
+					{redirect ? <Redirect to="/nft-generate" /> : ""}
 				</div>
 
-				<div class="break"></div>
-				<a href="#/nft-generate">
-					<div class="next" onClick={logData}>
-						Next
+				<div class="footer">
+					<div class="container-header">
+						<div class="footer-1">
+							<div class="name">RADIANCETEAM</div>
+							<div class="copyright">
+								© 2021, radianceteam.com
+								<br />
+								Terms of Service
+								<br />
+								Privacy Policy
+							</div>
+						</div>
+						<div class="footer-2">
+							<div class="pages">
+								<div class="page-element active">Home</div>
+								<div class="page-element">App</div>
+								<div class="page-element">FAQ</div>
+								<div class="page-element">Twitter</div>
+								<div class="page-element">Facebook</div>
+							</div>
+							<div class="email">
+								<span>For corparation</span>
+								<div class="text">info@radianceteam.com</div>
+							</div>
+						</div>
 					</div>
-				</a>
+				</div>
 			</div>
 		</Router>
 	);

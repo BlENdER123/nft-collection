@@ -111,6 +111,7 @@ import AppPage from "./sdk/AppPage";
 import NftCustomization from "./sdk/NftCustomization";
 import NftGenerate from "./sdk/NftGenerate";
 import NftCollection from "./sdk/NftCollection";
+import GettingStarted from "./sdk/GetttingStartedPage";
 
 import Header from "./sdk/Header";
 
@@ -301,32 +302,26 @@ function App() {
 		<>
 			<Router>
 				<Context.Provider value={{status: status}}>
-					<div className="App">
-						<Header></Header>
-						<Switch>
-							<Route exact path="/" component={ConnectWalletPage}></Route>
-							{/* <Route exact path="/connect-wallet" component={ConnectWalletPage}></Route> */}
-							<Route
-								exact
-								path="/welcome-nft"
-								component={WelcomeNftPage}
-							></Route>
-							<Route exact path="/load-nft" component={LoadNftPage}></Route>
-							<Route
-								exact
-								path="/nft-customization"
-								component={NftCustomization}
-							></Route>
-							<Route exact path="/nft-generate" component={NftGenerate}></Route>
-							<Route
-								exact
-								path="/nft-collection"
-								component={NftCollection}
-							></Route>
-							<Route exact path="/login" component={LoginPage}></Route>
-							<Route exact path="/app" component={AppPage}></Route>
-						</Switch>
-					</div>
+					<Switch>
+						<Route exact path="/" component={ConnectWalletPage}></Route>
+						{/* <Route exact path="/connect-wallet" component={ConnectWalletPage}></Route> */}
+						<Route exact path="/welcome-nft" component={WelcomeNftPage}></Route>
+						<Route exact path="/get-start" component={GettingStarted}></Route>
+						<Route exact path="/load-nft" component={LoadNftPage}></Route>
+						<Route
+							exact
+							path="/nft-customization"
+							component={NftCustomization}
+						></Route>
+						<Route exact path="/nft-generate" component={NftGenerate}></Route>
+						<Route
+							exact
+							path="/nft-collection"
+							component={NftCollection}
+						></Route>
+						<Route exact path="/login" component={LoginPage}></Route>
+						<Route exact path="/app" component={AppPage}></Route>
+					</Switch>
 				</Context.Provider>
 			</Router>
 		</>

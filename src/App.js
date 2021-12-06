@@ -303,9 +303,9 @@ function App() {
 			<Router>
 				<Context.Provider value={{status: status}}>
 					<Switch>
-						<Route exact path="/" component={ConnectWalletPage}></Route>
+						<Route exact path="/" component={WelcomeNftPage}></Route>
 						{/* <Route exact path="/connect-wallet" component={ConnectWalletPage}></Route> */}
-						<Route exact path="/welcome-nft" component={WelcomeNftPage}></Route>
+						{/* <Route exact path="/welcome-nft" component={WelcomeNftPage}></Route> */}
 						<Route exact path="/get-start" component={GettingStarted}></Route>
 						<Route exact path="/load-nft" component={LoadNftPage}></Route>
 						<Route

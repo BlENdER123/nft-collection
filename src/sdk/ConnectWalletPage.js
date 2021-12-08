@@ -6,9 +6,15 @@ import {Account} from "@tonclient/appkit";
 import {libWeb} from "@tonclient/lib-web";
 
 import {signerKeys} from "@tonclient/core";
-import {DEXClientContract} from "../extensions/contracts/DEXClientMainNet.js";
-import {DEXRootContract} from "../extensions/contracts/DEXRoot.js";
-import {DEXConnectorContract} from "../extensions/contracts/DEXConnector.js";
+
+import {DEXClientContract} from "./test net contracts/DEXClient.js";
+// import {DEXClientContract} from "../extensions/contracts/DEXClientMainNet.js";
+
+import {DEXRootContract} from "./test net contracts/DEXRoot.js";
+import {DEXConnectorContract} from "./test net contracts/DEXConnector.js";
+
+// import {DEXRootContract} from "../extensions/contracts/DEXRoot.js";
+// import {DEXConnectorContract} from "../extensions/contracts/DEXConnector.js";
 import {TONTokenWalletContract} from "../extensions/contracts/TONTokenWallet.js";
 //import {Loader} from "../components/Loader/Loader.js";
 
@@ -17,8 +23,8 @@ const {TonClient} = require("@tonclient/core");
 
 TonClient.useBinaryLibrary(libWeb);
 
-//const client = new TonClient({network: {endpoints: ["net.ton.dev"]}});
-const client = new TonClient({network: {endpoints: ["main.ton.dev"]}});
+const client = new TonClient({network: {endpoints: ["net.ton.dev"]}});
+//const client = new TonClient({network: {endpoints: ["main.ton.dev"]}});
 
 //const bip39 = require('bip39');
 const pidCrypt = require("pidcrypt");
@@ -48,9 +54,10 @@ function ConnectWalletPage() {
 	let pass = "";
 	let mnemonic = "";
 
-	//let dexrootAddr = "0:fa31b7395fe161aea6f193cfe1bbfd147faf004f996c624ba52c95f8fe64502f";
 	let dexrootAddr =
-		"0:5d0f5a8cb443e00934d1bb632acadc036a6c41b59308e3a36d809449a5e777d9";
+		"0:fa31b7395fe161aea6f193cfe1bbfd147faf004f996c624ba52c95f8fe64502f";
+	// let dexrootAddr =
+	// 	"0:5d0f5a8cb443e00934d1bb632acadc036a6c41b59308e3a36d809449a5e777d9";
 	const zeroAddress =
 		"0:0000000000000000000000000000000000000000000000000000000000000000";
 

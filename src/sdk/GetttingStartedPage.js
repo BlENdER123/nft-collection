@@ -1,8 +1,26 @@
-import React from "react";
-import {HashRouter as Router} from "react-router-dom";
+import React, {useState} from "react";
+import {HashRouter as Router, Redirect} from "react-router-dom";
 //import {main_screen_bg} from "../sdk/img/screenbg1.png"
 
 function GettingStarted() {
+	const [curentMode, setCurentMode] = useState(0);
+
+	const [redirect, setRedirect] = useState([false, false]);
+
+	function next() {
+		let temp = [];
+		for (let i = 0; i < redirect.length; i++) {
+			let tempVal = redirect[i];
+			if (i == curentMode) {
+				tempVal = true;
+			} else {
+				tempVal = false;
+			}
+			temp.push(tempVal);
+		}
+		setRedirect(temp);
+	}
+
 	return (
 		<Router>
 			<div className="App2">
@@ -33,21 +51,33 @@ function GettingStarted() {
 							<div class="title">Getting Started</div>
 							<div class="text">Select layout type</div>
 							<div class="modes">
-								<div class="mode-generator active">
+								<div
+									className={
+										curentMode == 0 ? "mode-generator active" : "mode-generator"
+									}
+									onClick={() => setCurentMode(0)}
+								>
 									<div class="img"></div>
 
 									<span>NFT Generator</span>
 								</div>
-								<div class="mode-constructor">
-									<div class="soon">Coming Soon</div>
+								<div
+									className={
+										curentMode == 1
+											? "mode-constructor active"
+											: "mode-constructor"
+									}
+									onClick={() => setCurentMode(1)}
+								>
+									{/* <div class="soon">Coming Soon</div> */}
 									<div class="img"></div>
 									<div class="break"></div>
 									<span>NFT Character Constructor</span>
 								</div>
 							</div>
-							<a href="#/load-nft">
-								<div class="button-1-square">Next</div>
-							</a>
+							<div onClick={next} class="button-1-square">
+								Next
+							</div>
 							<div class="button-3-square">
 								Not sure where to start? Check out our intro video here.
 							</div>
@@ -78,6 +108,9 @@ function GettingStarted() {
 						</div>
 					</div>
 				</div>
+
+				{redirect[0] ? <Redirect to="/load-nft" /> : ""}
+				{redirect[1] ? <Redirect to="/collection-market" /> : ""}
 
 				<div class="footer">
 					<div class="container-header">

@@ -10,13 +10,13 @@ function WelcomeNftPage() {
 	return (
 		<Router>
 			<div className={connectWal ? "error-bg" : "hide"}></div>
-			<div className={connectWal ? "App-error" : "App App2"}>
+			<div className={connectWal ? "App-error" : "App"}>
 				<div className="header header2">
 					<div className="container-header">
 						<div className="acc-info">
 							<div class="acc-info1">
 								<div class="name">NFTour</div>
-								{localStorage.address ? (
+								{false ? (
 									<div class="wallet">
 										<div className="acc-status">Connected:</div>
 										<div className="acc-wallet">{localStorage.address}</div>

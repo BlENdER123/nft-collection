@@ -112,7 +112,8 @@ import NftCustomization from "./sdk/NftCustomization";
 import NftGenerate from "./sdk/NftGenerate";
 import NftCollection from "./sdk/NftCollection";
 import GettingStarted from "./sdk/GetttingStartedPage";
-
+import CollectioMarket from "./sdk/CollectionMarket";
+import OpenPack from "./sdk/OpenPack";
 import Header from "./sdk/Header";
 
 // import "./sdk/App.css";
@@ -319,6 +320,12 @@ function App() {
 							path="/nft-collection"
 							component={NftCollection}
 						></Route>
+						<Route
+							exact
+							path="/collection-market"
+							component={CollectioMarket}
+						></Route>
+						<Route exact path="/open-pack" component={OpenPack}></Route>
 						<Route exact path="/login" component={LoginPage}></Route>
 						<Route exact path="/app" component={AppPage}></Route>
 					</Switch>

@@ -28,17 +28,29 @@ function GettingStarted() {
 					<div className="container-header">
 						<div className="acc-info">
 							<div class="acc-info1">
-								<div class="name">NFTour</div>
-								<div class="wallet">
-									<div className="acc-status">Connected:</div>
-									<div className="acc-wallet">{localStorage.address}</div>
-								</div>
+								<a href="#/">
+									<div class="name">NFTour</div>
+								</a>
+								{localStorage.address ? (
+									<div class="wallet">
+										<div className="acc-status">Connected:</div>
+										<div className="acc-wallet">{localStorage.address}</div>
+									</div>
+								) : (
+									""
+								)}
 							</div>
 
 							<div class="pages">
-								<div class="page-element active">Home</div>
-								<div class="page-element">NFT Generator</div>
-								<div class="page-element">NFT Chapter Constructor</div>
+								<a href="#/">
+									<div class="page-element">Home</div>
+								</a>
+								<a href="#/load-nft">
+									<div class="page-element">NFT Generator</div>
+								</a>
+								<a href="#/collection-market">
+									<div class="page-element">NFT Collection Market</div>
+								</a>
 								<div class="page-element">FAQ</div>
 							</div>
 						</div>
@@ -72,7 +84,7 @@ function GettingStarted() {
 									{/* <div class="soon">Coming Soon</div> */}
 									<div class="img"></div>
 									<div class="break"></div>
-									<span>NFT Character Constructor</span>
+									<span>NFT Collection Market</span>
 								</div>
 							</div>
 							<div onClick={next} class="button-1-square">

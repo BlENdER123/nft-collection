@@ -292,14 +292,14 @@ a:hover {
 .acc-info > .pages {
 	display: flex;
 }
-.acc-info > .pages > .page-element {
+.acc-info > .pages > a > .page-element {
 	margin-right: 20px;
 	color: rgba(256, 256, 256, 0.3);
 	cursor: pointer;
 	transition: 0.1s linear;
 }
-.acc-info > .pages > .active,
-.acc-info > .pages > .page-element:hover {
+.acc-info > .pages > a > .active,
+.acc-info > .pages > a > .page-element:hover {
 	color: #fff;
 }
 .acc > .content {

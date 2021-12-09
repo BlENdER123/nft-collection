@@ -115,6 +115,7 @@ import GettingStarted from "./sdk/GetttingStartedPage";
 import CollectioMarket from "./sdk/CollectionMarket";
 import OpenPack from "./sdk/OpenPack";
 import Header from "./sdk/Header";
+import HowPage from "./sdk/HowPage";
 
 // import "./sdk/App.css";
 
@@ -325,6 +326,7 @@ function App() {
 							path="/collection-market"
 							component={CollectioMarket}
 						></Route>
+						<Route exact path="/how" component={HowPage}></Route>
 						<Route exact path="/open-pack" component={OpenPack}></Route>
 						<Route exact path="/login" component={LoginPage}></Route>
 						<Route exact path="/app" component={AppPage}></Route>

@@ -654,6 +654,10 @@ button,
 .start-screen > .container-header > .content-2 > .text {
 	margin-bottom: 40px;
 }
+.start-screen > .container-header > .content-2 > .text > a > button {
+	margin-top: 20px;
+	padding: 17px 100px;
+}
 .modal-constructor-elements > .elements {
 	display: flex;
 	flex-wrap: wrap;

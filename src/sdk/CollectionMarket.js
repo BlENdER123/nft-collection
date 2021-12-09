@@ -4,8 +4,37 @@ import {HashRouter as Router} from "react-router-dom";
 //import {main_screen_bg} from "../sdk/img/screenbg1.png"
 import ConnectWalletPage from "./ConnectWalletPage";
 
+import {Account} from "@tonclient/appkit";
+import {libWeb} from "@tonclient/lib-web";
+
+import {signerKeys, TonClient, signerNone} from "@tonclient/core";
+
+import {DeployerColectionContract} from "./collection contracts/nftour/src/build/DeployerColectionContract.js";
+
+TonClient.useBinaryLibrary(libWeb);
+
+const client = new TonClient({network: {endpoints: ["net.ton.dev"]}});
+
+async function getClientKeys(phrase) {
+	//todo change with only pubkey returns
+	let test = await client.crypto.mnemonic_derive_sign_keys({
+		phrase,
+		path: "m/44'/396'/0'/0/0",
+		dictionary: 1,
+		word_count: 12,
+	});
+	console.log(test);
+	return test;
+}
+
 function CollectionMarket() {
 	const [connectWal, setConnect] = useState(false);
+
+	let dexrootAddr =
+		"0:6ee64ce9cb26f03ff4d5779dd97c27af8a66667ff8d88b3054e15d31572b3a34";
+
+	const zeroAddress =
+		"0:0000000000000000000000000000000000000000000000000000000000000000";
 
 	return (
 		<Router>

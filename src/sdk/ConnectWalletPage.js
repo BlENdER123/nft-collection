@@ -449,6 +449,11 @@ function ConnectWalletPage() {
 
 										if (acc === 1) {
 											setLoader(false);
+											let encrypted = aes.encryptText(seedLogin, pass);
+											console.log(encrypted);
+
+											localStorage.setItem("seedHash", encrypted);
+											sessionStorage.setItem("pass", pass);
 											localStorage.setItem("address", addr);
 											setCurentPageLogin(curentPageLogin + 1);
 										} else {

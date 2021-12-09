@@ -2,6 +2,14 @@ import React, {useState} from "react";
 import {HashRouter as Router, Redirect} from "react-router-dom";
 import mergeImages from "merge-images";
 
+const axios = require("axios");
+//const fs = require('fs');
+const FormData = require("form-data");
+
+const pinataKey = "0a2ed9f679a6c395f311";
+const pinataSecretKey =
+	"7b53c4d13eeaf7063ac5513d4c97c4f530ce7e660f0c147ab5d6aee6da9a08b9";
+
 let nftArr = [];
 
 function NftCustomization() {
@@ -222,7 +230,9 @@ function NftCustomization() {
 		mergeImages(mergeArr, {
 			width: localStorage.getItem("width"),
 			height: localStorage.getItem("height"),
-		}).then((b64) => tempCollection.push(b64));
+		}).then((b64) => {
+			tempCollection.push(b64);
+		});
 
 		console.log(tempCollection);
 

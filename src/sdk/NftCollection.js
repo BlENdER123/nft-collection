@@ -10,9 +10,11 @@ import {signerKeys, TonClient, signerNone} from "@tonclient/core";
 import {DeployerColectionContract} from "./collection contracts/nftour/src/build/DeployerColectionContract.js";
 import {NftRootContract} from "./collection contracts/nftour/src/build/NftRootContract.js";
 import {CollectionRoot} from "./collection contracts/nftour/src/build/NftRootContract.js";
+import {StorageContract} from "./collection contracts/nftour/src/build/StorageContract.js";
 import {DEXRootContract} from "./test net contracts/DEXRoot.js";
 
 import {DEXClientContract} from "./test net contracts/DEXClient.js";
+import {Collections} from "@material-ui/icons";
 
 TonClient.useBinaryLibrary(libWeb);
 
@@ -30,30 +32,38 @@ async function getClientKeys(phrase) {
 	return test;
 }
 
+function base64ToHex(str) {
+	const raw = atob(str);
+	let result = "";
+	for (let i = 0; i < raw.length; i++) {
+		const hex = raw.charCodeAt(i).toString(16);
+		result += hex.length === 2 ? hex : "0" + hex;
+	}
+	return result.toUpperCase();
+}
+
 function NftCustomization() {
 	let arr = JSON.parse(localStorage.getItem("collection"));
 
 	const [collection, setCollection] = useState(arr);
 
 	let dexrootAddr =
-		"0:2f7e2b36f2033453488b0c7585dd3b0025cfc6eae1d2f377239dbe98735732c1";
+		"0:6ee64ce9cb26f03ff4d5779dd97c27af8a66667ff8d88b3054e15d31572b3a34";
 
 	const zeroAddress =
 		"0:0000000000000000000000000000000000000000000000000000000000000000";
 
 	async function deployCollection() {
-		// const clientAcc = new Account(DEXClientContract, {
-		// 	address: localStorage.address,
-		// 	signer: signerKeys(getClientKeys("build clay crush dolphin sadness inch trade mule notice differ any border")),
-		// 	client,
-		// });
-
-		// console.log(clientAcc);
-
 		const acc = new Account(DeployerColectionContract, {
-			//address: localStorage.address,
+			address: dexrootAddr,
+			signer: signerNone(),
+			client,
+		});
+
+		const clientAcc = new Account(DEXClientContract, {
+			address: localStorage.address,
 			signer: signerKeys(
-				getClientKeys(
+				await getClientKeys(
 					"build clay crush dolphin sadness inch trade mule notice differ any border",
 				),
 			),
@@ -61,40 +71,165 @@ function NftCustomization() {
 		});
 
 		try {
-			// const {body} = await client.abi.encode_message_body({
-			// 	abi: {type: "Contract", value: DataContract.abi},
-			// 	signer: {type: "None"},
-			// 	is_internal: true,
-			// 	call_set: {
-			// 		function_name: "withdrawDePoolPart",
-			// 		input: {
-			// 			amount: fixedAmount
-			// 		},
-			// 	},
-			// });
-			const res = await acc.run("deployColection", {
-				addrOwner: localStorage.address,
-				fees: 10,
-				costMint: 149000,
+			const {body} = await client.abi.encode_message_body({
+				abi: {type: "Contract", value: DeployerColectionContract.abi},
+				signer: {type: "None"},
+				is_internal: true,
+				call_set: {
+					function_name: "deployColection",
+					input: {
+						addrOwner: localStorage.address,
+						fees: 10,
+						costMint: 149000,
+					},
+				},
+			});
+
+			const res = await clientAcc.run("sendTransaction", {
+				dest: dexrootAddr,
+				value: 1500000000,
+				bounce: true,
+				flags: 3,
+				payload: body,
 			});
 			console.log(res);
 		} catch (e) {
 			console.log(e);
 		}
 
-		// await dexrootAddr.run("deployColection", {
-		// 	addrOwner: localStorage.address,
-		// 	fees: 10,
-		// 	costMint: 149000,
-		// })
+		//
+
+		let collectionAddr;
+
+		try {
+			const response = await acc.runLocal("getAddressColections", {});
+			let value0 = response.decoded.output.addreses;
+			collectionAddr = value0[value0.length - 1];
+			console.log("value0", value0);
+			//return value0;
+		} catch (e) {
+			console.log("catch E", e);
+			//return e;
+		}
+
+		//
+
+		console.log(collectionAddr);
+		for (let i = 0; i < collection.length; i++) {
+			let temp = collection[i].replace(/^data:image\/(png|jpg);base64,/, "");
+
+			//const pattern = new RegExp(".{1," + 10000 + "}", "g");
+			let result = temp;
+
+			try {
+				const {body} = await client.abi.encode_message_body({
+					abi: {type: "Contract", value: NftRootContract.abi},
+					signer: {type: "None"},
+					is_internal: true,
+					call_set: {
+						function_name: "deployMetadata",
+						input: {
+							name: "test",
+							description: "test",
+							dna: "test",
+							attributes: [{_type: "test", value: "string", rarity: 5}],
+							chunks: result.length,
+							mimeType: "test",
+						},
+					},
+				});
+
+				console.log(collectionAddr, body);
+
+				const res = await clientAcc.run("sendTransaction", {
+					dest: collectionAddr,
+					value: 2600000000,
+					bounce: true,
+					flags: 3,
+					payload: body,
+				});
+				console.log(res);
+			} catch (e) {
+				console.log(e);
+			}
+
+			//
+
+			const clientAcc1 = new Account(NftRootContract, {
+				address: collectionAddr,
+				signer: signerNone(),
+				client,
+			});
+
+			let imgAddr;
+			try {
+				const response = await clientAcc1.runLocal("resolveStorage", {
+					addrRoot: collectionAddr,
+					id: 0,
+					addrAuthor: localStorage.address,
+				});
+
+				imgAddr = response;
+				console.log("value0", imgAddr);
+
+				//return value0;
+			} catch (e) {
+				console.log("catch E", e);
+				//return e;
+			}
+
+			const clientStorage = new Account(StorageContract, {
+				address: imgAddr,
+				signer: signerNone(),
+				client,
+			});
+
+			for (let j = 0; j < result.length; j++) {
+				console.log(typeof TonClient.toHex(result[j]));
+				try {
+					const {body} = await client.abi.encode_message_body({
+						abi: {type: "Contract", value: StorageContract.abi},
+						signer: {type: "None"},
+						is_internal: true,
+						call_set: {
+							function_name: "fillContent",
+							input: {
+								chankNumber: j,
+								part: TonClient.toHex(result[j]),
+							},
+						},
+					});
+
+					const res = await clientAcc.run("sendTransaction", {
+						dest: imgAddr,
+						value: 500000000,
+						bounce: true,
+						flags: 3,
+						payload: body,
+					});
+					console.log(res);
+				} catch (e) {
+					console.log(e);
+				}
+			}
+
+			try {
+				const response = await clientStorage.runLocal("getInfo");
+				console.log(response);
+				//return value0;
+			} catch (e) {
+				console.log("catch E", e);
+				//return e;
+			}
+		}
 
 		// try {
-		// 	const response = await acc.runLocal("deployColection", {
-		// 		addrOwner: localStorage.address,
-		// 		fees: 10,
-		// 		costMint: 149000,
+		// 	const response = await clientAcc1.runLocal("resolveMetadata", {
+		// 		addrRoot: '0:0774b502850fa0ed104a4ed805914782552651c98d45f36272eecf4ac5e67f36',
+		// 		id: 0
 		// 	});
-		// 	let value0 = response.decoded.output.value0;
+
+		// 	let value0 = response;
 		// 	console.log("value0", value0);
 		// 	//return value0;
 		// } catch (e) {
@@ -103,80 +238,51 @@ function NftCustomization() {
 		// }
 
 		// try {
-		// 	const response = await acc.runLocal("getAddressColections", {});
-		// 	let value0 = response.decoded.output.addreses;
+		// 	const response = await clientAcc1.runLocal("getInfo", {});
+		// 	let value0 = response;
 		// 	console.log("value0", value0);
-		// 	//return value0;
 		// } catch (e) {
 		// 	console.log("catch E", e);
-		// 	//return e;
-		// }
-
-		// const accRoot = new Account(NftRootContract, {
-		// 	address: dexrootAddr,
-		// 	client,
-		// });
-
-		// await accRoot.deploy({
-		// 	initFunctionName: "constructor",
-		// 	initInput: {ownerAddr: zeroAddress},
-		// })
-
-		// try {
-		// 	const response = await accRoot.runLocal("deployMetadata", {
-		// 		name: "test",
-		// 		description: "test",
-		// 		dna: "test",
-		// 		attributes: [
-		// 			{_type: "test",
-		// 			value: "string",
-		// 			rarity: 5}
-		// 		],
-		// 		chunks: 5,
-		// 		mimeType: "test"
-
-		// 	});
-		// 	let value0 = response.decoded.output.value0;
-		// 	console.log("value0", value0);
-		// 	//return value0;
-		// } catch (e) {
-		// 	console.log("catch E", e);
-		// 	//return e;
-		// }
-
-		// const abi = {
-		// 	type: 'Contract',
-		// 	value: NftRootContract.abi
-		// }
-
-		// const params = {
-		// 	send_events: false,
-		// 	message_encode_params: {
-		// 		address: dexrootAddr,
-		// 		abi,
-		// 		call_set: {
-		// 			function_name: 'deployMetadata',
-		// 			input: {
-		// 				name: "test",
-		// 				description: "test",
-		// 				dna: "test",
-		// 				attributes: [
-		// 					{_type: "test",
-		// 					value: "string",
-		// 					rarity: 5}
-		// 				],
-		// 				chunks: 5,
-		// 				mimeType: "test"
-		// 			}
-		// 		},
-		// 		signer: signerNone(),
-		// 	}
 		// }
 
 		// let response = await client.processing.process_message(params);
 		// //console.log(1);
 		// console.log(response);
 		// console.log(`Сontract run transaction with output ${response.decoded.output}, ${response.transaction.id}`);
+	}
+
+	function test() {
+		let bs64;
+
+		var img = new Image();
+		img.crossOrigin = "Anonymous";
+		img.onload = function () {
+			var canvas = document.createElement("CANVAS");
+			var ctx = canvas.getContext("2d");
+			var dataURL;
+			canvas.height = this.naturalHeight;
+			canvas.width = this.naturalWidth;
+			ctx.drawImage(this, 0, 0);
+			dataURL = canvas.toDataURL(
+				"https://gateway.pinata.cloud/ipfs/Qmbvi4pcWt22YpopW6XfPxtxi4jftABQpoaoqTLtWaZftg",
+			);
+			console.log(dataURL);
+			bs64 = dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
+			//callback(dataURL);
+
+			const pattern = new RegExp(".{1," + 15000 + "}", "g");
+			let res = bs64.match(pattern);
+
+			console.log(res);
+		};
+		img.src =
+			"https://gateway.pinata.cloud/ipfs/Qmbvi4pcWt22YpopW6XfPxtxi4jftABQpoaoqTLtWaZftg";
+		if (img.complete || img.complete === undefined) {
+			img.src =
+				"data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==";
+			img.src =
+				"https://gateway.pinata.cloud/ipfs/Qmbvi4pcWt22YpopW6XfPxtxi4jftABQpoaoqTLtWaZftg";
+		}
 	}
 
 	return (
@@ -221,9 +327,8 @@ function NftCustomization() {
 						NFT art creator’s main goal is to invent, and using NFTour artists
 					</div>
 
-					<div class="button-1-square" onClick={deployCollection}>
-						Deploy Collection
-					</div>
+					<div class="button-1-square">Deploy Collection</div>
+
 					<div class="button-3-square">Save As</div>
 
 					<div class="nft-collection">

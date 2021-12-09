@@ -95,27 +95,17 @@ function GettingStarted() {
 							</div>
 						</div>
 						<div class="content-2">
-							<div class="title">How it work?</div>
-							<div class="text">Small documentation on service functions</div>
+							<div class="title">How to Use NFTour Collection Generator?</div>
 							<div class="text">
-								Phasellus condimentum suscipit metus vel mattis. Ut vulputate
-								tincidunt odio. Nam odio augue, molestie id rutrum et, cursus id
-								libero. Quisque nulla dolor, condimentum quis posuere et, mattis
-								quis sapien. Donec mollis.
+								NFTour collection generator is a special software by which you
+								can easily create thousands of unique NFT arts. The software
+								application will generate a series of digital collectibles based
+								on the specification given by the user. Here are the steps you
+								need to follow in order to use it.
 								<br />
-								<br />
-								Fusce venenatis odio id pharetra vulputate. Phasellus dolor
-								lacus, condimentum at bibendum vel, laoreet id arcu. Phasellus
-								lobortis luctus semper. Fusce faucibus dolor eget nulla
-								venenatis, eget porttitor nibh finibus. Praesent rhoncus erat et
-								aliquet suscipit. Nam sed bibendum arcu, quis tristique tellus.
-								<br />
-								<br />
-								Fusce venenatis odio id pharetra vulputate. Phasellus dolor
-								lacus, condimentum at bibendum vel, laoreet id arcu. Phasellus
-								lobortis luctus semper. Fusce faucibus dolor eget nulla
-								venenatis, eget porttitor nibh finibus. Praesent rhoncus erat et
-								aliquet suscipit. Nam sed bibendum arcu, quis tristique tellus.
+								<a href="#/how">
+									<button class="button-1-square">How to use?</button>
+								</a>
 							</div>
 						</div>
 					</div>
@@ -138,7 +128,7 @@ function GettingStarted() {
 						</div>
 						<div class="footer-2">
 							<div class="pages">
-								<div class="page-element active">Home</div>
+								<div class="page-element">Home</div>
 								<div class="page-element">App</div>
 								<div class="page-element">FAQ</div>
 								<div class="page-element">Twitter</div>

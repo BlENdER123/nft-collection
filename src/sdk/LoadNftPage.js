@@ -802,6 +802,7 @@ function LoadNftPage() {
 												min="0"
 												max="4"
 												step="1"
+												value={classArr1[curentLayer].rarity[index]}
 												onChange={() => changeRarity(event.target.value)}
 											/>
 										);
@@ -838,14 +839,12 @@ function LoadNftPage() {
 						</div>
 						<div class="footer-2">
 							<div class="pages">
-								<div class="page-element active">Home</div>
-								<div class="page-element">App</div>
-								<div class="page-element">FAQ</div>
-								<div class="page-element">Twitter</div>
-								<div class="page-element">Facebook</div>
+								<a href="https://t.me/DefiSpacecom">
+									<div class="page-element">Telegram</div>
+								</a>
 							</div>
 							<div class="email">
-								<span>For corparation</span>
+								<span>For corporation</span>
 								<div class="text">info@radianceteam.com</div>
 							</div>
 						</div>

@@ -149,7 +149,15 @@ function WelcomeNftPage() {
 								artists
 							</div>
 
-							<div class="video"></div>
+							<div class="video">
+								<iframe
+									src="https://www.youtube.com/embed/YHatcktJM8I"
+									title="YouTube video player"
+									frameborder="0"
+									allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+									allowfullscreen
+								></iframe>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -168,14 +176,12 @@ function WelcomeNftPage() {
 						</div>
 						<div class="footer-2">
 							<div class="pages">
-								<div class="page-element active">Home</div>
-								<div class="page-element">App</div>
-								<div class="page-element">FAQ</div>
-								<div class="page-element">Twitter</div>
-								<div class="page-element">Facebook</div>
+								<a href="https://t.me/DefiSpacecom">
+									<div class="page-element">Telegram</div>
+								</a>
 							</div>
 							<div class="email">
-								<span>For corparation</span>
+								<span>For corporation</span>
 								<div class="text">info@radianceteam.com</div>
 							</div>
 						</div>

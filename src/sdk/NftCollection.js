@@ -7,10 +7,10 @@ import {libWeb} from "@tonclient/lib-web";
 import {signerKeys, TonClient, signerNone} from "@tonclient/core";
 
 //contracts
-import {DeployerColectionContract} from "./collection contracts/nftour/src/build/DeployerColectionContract.js";
-import {NftRootContract} from "./collection contracts/nftour/src/build/NftRootContract.js";
-import {CollectionRoot} from "./collection contracts/nftour/src/build/NftRootContract.js";
-import {StorageContract} from "./collection contracts/nftour/src/build/StorageContract.js";
+// import {DeployerColectionContract} from "./collection contracts/nftour/src/build/DeployerColectionContract.js";
+// import {NftRootContract} from "./collection contracts/nftour/src/build/NftRootContract.js";
+// import {CollectionRoot} from "./collection contracts/nftour/src/build/NftRootContract.js";
+// import {StorageContract} from "./collection contracts/nftour/src/build/StorageContract.js";
 import {DEXRootContract} from "./test net contracts/DEXRoot.js";
 
 import {DEXClientContract} from "./test net contracts/DEXClient.js";
@@ -356,14 +356,12 @@ function NftCustomization() {
 						</div>
 						<div class="footer-2">
 							<div class="pages">
-								<div class="page-element active">Home</div>
-								<div class="page-element">App</div>
-								<div class="page-element">FAQ</div>
-								<div class="page-element">Twitter</div>
-								<div class="page-element">Facebook</div>
+								<a href="https://t.me/DefiSpacecom">
+									<div class="page-element">Telegram</div>
+								</a>
 							</div>
 							<div class="email">
-								<span>For corparation</span>
+								<span>For corporation</span>
 								<div class="text">info@radianceteam.com</div>
 							</div>
 						</div>

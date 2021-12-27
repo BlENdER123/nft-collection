@@ -1,8 +1,18 @@
-import React, {useState} from "react";
+import React, {useState, PropTypes} from "react";
 import {connect} from "react-redux";
 import {HashRouter as Router} from "react-router-dom";
 //import {main_screen_bg} from "../sdk/img/screenbg1.png"
 import ConnectWalletPage from "./ConnectWalletPage";
+
+import {
+	Link,
+	Button,
+	Element,
+	Events,
+	animateScroll as scroll,
+	scrollSpy,
+	scroller,
+} from "react-scroll";
 
 function WelcomeNftPage() {
 	const [connectWal, setConnect] = useState(false);
@@ -69,7 +79,9 @@ function WelcomeNftPage() {
 								<a href="#/get-start">
 									<button class="button-1">Get started</button>
 								</a>
-								<button class="button-2">How it work</button>
+								<Link to="video">
+									<button class="button-2">How it work</button>
+								</Link>
 							</div>
 						</div>
 					</div>
@@ -148,7 +160,9 @@ function WelcomeNftPage() {
 								NFT art creator’s main goal is to invent, and using NFTour
 								artists
 							</div>
-
+							<Element name="video" className="element">
+								test 1
+							</Element>
 							<div class="video">
 								<iframe
 									src="https://www.youtube.com/embed/YHatcktJM8I"

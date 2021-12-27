@@ -593,6 +593,23 @@ function NftCustomization() {
 								libero. Quisque nulla dolor, condimentum quis posuere et, mattis
 								quis sapien. Donec mollis.{" "}
 							</div>
+
+							<div style={{margin: "20px 0px 0px 0px"}} class="title">
+								Price Settings
+							</div>
+							<div class="text">Set a price for your collection</div>
+							<div class="price">
+								<div class="title">Collection Price</div>
+								<input placeholder="100.0000" type="text" />
+							</div>
+							<div class="royalty">
+								<div class="title">Royalty (26%)</div>
+								<input type="range" min="1" max="40" step="1" />
+								<div class="procent">
+									<span>1%</span>
+									<span>40%</span>
+								</div>
+							</div>
 						</div>
 					</div>
 					{redirect ? <Redirect to="/nft-collection" /> : ""}
